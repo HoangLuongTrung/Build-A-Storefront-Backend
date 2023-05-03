@@ -34,12 +34,36 @@ export class ProductModel {
   async list(name: string): Promise<Product[]> {
     try {
       const connect = await client.connect();
-      const sql = `SELECT * FROM products WHERE LOWER(name) LIKE LOWER('${name || ''}%') AND price = 1000 ORDER BY name`;
+      const sql = `SELECT * FROM products WHERE LOWER(name) LIKE LOWER('${name || ''}%') ORDER BY name`;
       const { rows } = await connect.query(sql);
       connect.release();
       return rows;
     } catch (error) {
       throw new Error(`Could not get list products ${error}`);
+    }
+  }
+
+  async popularProducts(): Promise<Product[]> {
+    try {
+      const connect = await client.connect();
+      const sql = `SELECT * FROM products ORDER BY name LIMIT 5`;
+      const { rows } = await connect.query(sql);
+      connect.release();
+      return rows;
+    } catch (error) {
+      throw new Error(`Could not get list popular products ${error}`);
+    }
+  }
+
+  async detail(id: number): Promise<Product> {
+    try {
+      const connect = await client.connect();
+      const sql = `SELECT * FROM products WHERE id = ${id}`;
+      const { rows } = await connect.query(sql);
+      connect.release();
+      return rows[0];
+    } catch (error) {
+      throw new Error(`Could not get detail product ${error}`);
     }
   }
 }

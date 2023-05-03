@@ -7,7 +7,7 @@ const create = async (req: Request, res: Response) => {
     const name = req.body.name;
     const price = req.body.price;
     const category = req.body.category;
-    const product = await productsModel.create({name, price, category});
+    const product = await productsModel.create({ name, price, category });
     res.send(product);
   } catch (error) {
     res.send(error);
@@ -24,7 +24,28 @@ const getListProduct = async (req: Request, res: Response) => {
   }
 }
 
+const getTopPopularProducts = async (req: Request, res: Response) => {
+  try {
+    const listPopularProduct = await productsModel.popularProducts();
+    res.send(listPopularProduct);
+  } catch (error) {
+    res.send(error);
+  }
+}
+
+const getProductById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const product = await productsModel.detail(+id);
+    res.send(product);
+  } catch (error) {
+    res.send(error);
+  }
+}
+
 export default function productRouter(app: Application) {
   app.post('/products/create', create);
   app.get('/products/list', getListProduct);
+  app.get('/products/popular', getTopPopularProducts);
+  app.get('/products/detail/:id', getProductById);
 }

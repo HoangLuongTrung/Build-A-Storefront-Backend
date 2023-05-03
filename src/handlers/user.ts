@@ -34,7 +34,6 @@ const getUserById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const user = await usersModel.get(+id);
-    console.log(user);
     res.send(user);
   } catch (error) {
     res.send(error);

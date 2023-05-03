@@ -23,7 +23,6 @@ const create = async (req: Request, res: Response) => {
 const getListUser = async (_req: Request, res: Response) => {
   try {
     const listUser = await usersModel.list();
-    console.log(listUser);
     res.send(listUser);
   } catch (error) {
     res.send(error);
@@ -68,10 +67,23 @@ const updateUser = async (req: Request, res: Response) => {
   }
 }
 
+const validateAuth = async (req: Request, res: Response) => {
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
+    const isValid = await usersModel.authenticate({ username: username, password: password })
+    res.send(isValid)
+  } catch (error) {
+    res.send(error);
+  }
+
+}
+
 export default function userRoutes(app: Application) {
   app.post('/users/create', create);
   app.get('/users/list', getListUser);
   app.get('/users/:id', getUserById);
   app.delete('/delete_user/:id', deleteUserById);
   app.put('/update_user', updateUser);
+  app.post('/authenticate', validateAuth);
 }

@@ -1,6 +1,11 @@
 import bcrypt from 'bcrypt';
 import client from "../database";
 
+export interface Authenticate {
+  username: string;
+  password: string;
+}
+
 export interface UpdateUser {
   id: number;
   firstName: string;
@@ -28,8 +33,8 @@ export class UsersModel {
     const { firstName, lastName, username, password } = user;
     try {
       const connect = await client.connect();
-      const sql = `INSERT INTO users(username, password, firstname, lastname) VALUES ('${username}', '${password}', '${firstName}', '${lastName}') RETURNING *`;
       const hashPassword = bcrypt.hashSync(password + process.env.BCRYPT_PASSWORD, parseInt(process.env.SALT_ROUNDS as string, 10));
+      const sql = `INSERT INTO users(username, password, firstname, lastname) VALUES ('${username}', '${hashPassword}', '${firstName}', '${lastName}') RETURNING *`;
       const result = await connect.query(sql);
       const user = result.rows[0];
       connect.release();
@@ -67,7 +72,7 @@ export class UsersModel {
     try {
       const connect = await client.connect();
       const sql = `DELETE FROM users WHERE id = ${id}`;
-      const result = await connect.query(sql);
+      await connect.query(sql);
       connect.release();
       return true;
     } catch (error) {
@@ -85,6 +90,25 @@ export class UsersModel {
       return rows[0];
     } catch (error) {
       throw new Error(`Could not update user ${error}`);
+    }
+  }
+
+  async authenticate(authenticate: Authenticate): Promise<boolean> {
+    try {
+      const { username, password } = authenticate;
+      const connect = await client.connect();
+      const sql = `SELECT password FROM users  WHERE username = '${username}'`;
+      const { rows } = await connect.query(sql);
+      if (rows.length > 0) {
+        const user = rows[0];
+        if (bcrypt.compareSync(password + process.env.BCRYPT_PASSWORD, user.password)) {
+          return true;
+        }
+      }
+      connect.release();
+      return false;
+    } catch (error) {
+      throw new Error(`Could not access ${error}`);
     }
   }
 }

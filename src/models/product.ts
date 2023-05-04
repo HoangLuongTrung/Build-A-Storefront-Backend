@@ -66,4 +66,29 @@ export class ProductModel {
       throw new Error(`Could not get detail product ${error}`);
     }
   }
+
+  async update(info: Product): Promise<Product> {
+    try {
+      const { id, name, price, category } = info;
+      const connect = await client.connect();
+      const sql = `UPDATE products SET name = '${name}', price = ${price}, category = '${category}' WHERE id = ${id} RETURNING *`;
+      const { rows } = await connect.query(sql);
+      connect.release();
+      return rows[0];
+    } catch (error) {
+      throw new Error(`Could not update product ${error}`);
+    }
+  }
+
+  async delete(id: number): Promise<boolean> {
+    try {
+      const connect = await client.connect();
+      const sql = `DELETE FROM products WHERE id = ${id}`;
+      await connect.query(sql);
+      connect.release();
+      return true;
+    } catch (error) {
+      throw new Error(`Could not delete product ${error}`);
+    }
+  }
 }

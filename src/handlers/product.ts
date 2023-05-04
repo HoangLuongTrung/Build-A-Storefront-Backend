@@ -43,9 +43,34 @@ const getProductById = async (req: Request, res: Response) => {
   }
 }
 
+const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const id = req.body.id;
+    const name = req.body.name;
+    const price = req.body.price;
+    const category = req.body.category;
+    const product = await productsModel.update({ id, name, price, category });
+    res.send(product);
+  } catch (error) {
+    res.send(error);
+  }
+}
+
+const deleteProductById = async (req: Request, res: Response ) => {
+  try {
+    const id = req.body.id;
+    const isDelete = await productsModel.delete(id);
+    res.send(isDelete);
+  } catch (error) {
+    res.send(error);
+  }
+}
+
 export default function productRouter(app: Application) {
   app.post('/products/create', create);
   app.get('/products/list', getListProduct);
   app.get('/products/popular', getTopPopularProducts);
   app.get('/products/detail/:id', getProductById);
+  app.put('/products/update', updateProduct);
+  app.delete('/products/delete', deleteProductById);
 }

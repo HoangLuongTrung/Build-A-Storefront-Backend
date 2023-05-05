@@ -1,5 +1,6 @@
 import { Application, Request, Response } from 'express';
 import { OrderModel } from '../models/order';
+import { ProductModel } from '../models/product';
 
 const orderModel = new OrderModel();
 const orderProducts = async (req: Request, res: Response) => {
@@ -18,6 +19,16 @@ const orderProducts = async (req: Request, res: Response) => {
   }
 }
 
+const getListProductOrder = async (req: Request, res: Response) => {
+  try {
+    const orders = await orderModel.list();
+    res.send(orders);
+  } catch (error) {
+    res.send(error);
+  }
+}
+
 export default function orderRoutes(app: Application) {
   app.post('/orders/create', orderProducts);
+  app.get('/orders/list', getListProductOrder);
 }

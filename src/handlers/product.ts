@@ -59,8 +59,8 @@ const updateProduct = async (req: Request, res: Response) => {
 
 const deleteProductById = async (req: Request, res: Response ) => {
   try {
-    const id = req.body.id;
-    const isDelete = await productsModel.delete(id);
+    const id = req.params.id;
+    const isDelete = await productsModel.delete(+id);
     res.send(isDelete);
   } catch (error) {
     res.send(error);
@@ -73,5 +73,5 @@ export default function productRouter(app: Application) {
   app.get('/products/popular', getTopPopularProducts);
   app.get('/products/detail/:id', getProductById);
   app.put('/products/update', verifyToken, updateProduct);
-  app.delete('/products/delete', verifyToken, deleteProductById);
+  app.delete('/products/delete/:id', verifyToken, deleteProductById);
 }

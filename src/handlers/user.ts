@@ -1,5 +1,6 @@
 import { Application, Request, Response } from 'express';
-import { UsersModel } from '../models/user';
+import { User, UsersModel } from '../models/user';
+import { getTokenByUser, verifyToken } from '../utils/utils';
 const usersModel = new UsersModel();
 
 const create = async (req: Request, res: Response) => {
@@ -14,9 +15,11 @@ const create = async (req: Request, res: Response) => {
       username,
       password,
     });
-    res.send(user);
+    const token = getTokenByUser(user);
+    res.json(token);
   } catch (error) {
-    res.send(error);
+    res.status(400);
+    res.json(error);
   }
 }
 
@@ -70,8 +73,8 @@ const validateAuth = async (req: Request, res: Response) => {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const isValid = await usersModel.authenticate({ username: username, password: password })
-    res.send(isValid)
+    const user: User | null = await usersModel.authenticate({ username: username, password: password })
+    res.json(getTokenByUser(user));
   } catch (error) {
     res.send(error);
   }
@@ -82,7 +85,7 @@ export default function userRoutes(app: Application) {
   app.post('/users/create', create);
   app.get('/users/list', getListUser);
   app.get('/users/:id', getUserById);
-  app.delete('/delete_user/:id', deleteUserById);
+  app.delete('/delete_user/:id', verifyToken, deleteUserById);
   app.put('/update_user', updateUser);
   app.post('/authenticate', validateAuth);
 }

@@ -1,5 +1,6 @@
 import { Application, Request, Response } from 'express';
 import { ProductModel } from '../models/product';
+import { verifyToken } from '../utils/utils';
 
 const productsModel = new ProductModel();
 const create = async (req: Request, res: Response) => {
@@ -67,10 +68,10 @@ const deleteProductById = async (req: Request, res: Response ) => {
 }
 
 export default function productRouter(app: Application) {
-  app.post('/products/create', create);
+  app.post('/products/create', verifyToken, create);
   app.get('/products/list', getListProduct);
   app.get('/products/popular', getTopPopularProducts);
   app.get('/products/detail/:id', getProductById);
-  app.put('/products/update', updateProduct);
-  app.delete('/products/delete', deleteProductById);
+  app.put('/products/update', verifyToken, updateProduct);
+  app.delete('/products/delete', verifyToken, deleteProductById);
 }

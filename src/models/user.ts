@@ -93,7 +93,7 @@ export class UsersModel {
     }
   }
 
-  async authenticate(authenticate: Authenticate): Promise<boolean> {
+  async authenticate(authenticate: Authenticate): Promise<User | null> {
     try {
       const { username, password } = authenticate;
       const connect = await client.connect();
@@ -102,11 +102,11 @@ export class UsersModel {
       if (rows.length > 0) {
         const user = rows[0];
         if (bcrypt.compareSync(password + process.env.BCRYPT_PASSWORD, user.password)) {
-          return true;
+          return user;
         }
       }
       connect.release();
-      return false;
+      return null;
     } catch (error) {
       throw new Error(`Could not access ${error}`);
     }

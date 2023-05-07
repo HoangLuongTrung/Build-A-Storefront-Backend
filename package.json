@@ -4,11 +4,14 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build": "npx tsc",
-    "start": "nodemon src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "db-migrate --env test up && ENV=test jasmine-ts --config=jasmine.json || db-migrate --env test down",
-    "tsc": "tsc"
+    "start": "nodemon src/server.ts",
+    "lint": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
+    "test": "jasmine-ts",
+    "build": "tsc --esModuleInterop src/server.ts --outDir ./dist",
+    "db-up": "db-migrate up",
+    "db-down": "db-migrate down",
+    "jasmine": "jasmine"
   },
   "author": "Udacity",
   "license": "ISC",

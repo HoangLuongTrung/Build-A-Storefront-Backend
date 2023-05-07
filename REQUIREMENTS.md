@@ -4,21 +4,29 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
-#### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Create: `'users/create'`
+- List: `'users/list'`
+- Detail: `'users/:id'`
+- Delete: `'delete_user/:id'`
+- Update: `'update_user'`
+- Authenticate: `'authenticate'`
+
+#### Products
+- Create: `'products/create'`
+- List: `'products/list'`
+- Detail: `'products/detail/:id'`
+- Delete: `'products/delete/:id'`
+- Update: `'products/update'`
+- Popular: `'products/popular'`
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Create: `'orders/create'`
+- List: `'orders/list'`
+- Detail: `'orders/detail/:id'`
+- Delete: `'orders/delete/:id'`
+- Update: `'orders/update'`
 
 ## Data Shapes
 #### Product
@@ -39,3 +47,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+#### Orders Product
+- order_id INTEGER REFERENCES orders(id)
+- product_id INTEGER REFERENCES products(id)
+- quantity INTEGER

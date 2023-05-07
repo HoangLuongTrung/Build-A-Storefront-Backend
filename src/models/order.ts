@@ -5,6 +5,11 @@ export interface OrderProduct {
   quanlity: number;
 }
 
+export interface OrderProductMapping {
+  product_id: number;
+  quantity: number;
+}
+
 export interface Order {
   userId: number;
   status: 'active' | 'complete';
@@ -85,7 +90,7 @@ export class OrderModel {
     }
   }
 
-  async update(id: number, status: 'active' | 'complete', orderProducts: any[]): Promise<any> {
+  async update(id: number, status: 'active' | 'complete', orderProducts: OrderProductMapping[]): Promise<Order> {
     try {
       const connect = await client.connect();
       const sqlOrder = `UPDATE orders SET status = '${status}' WHERE id = ${id} RETURNING *`;

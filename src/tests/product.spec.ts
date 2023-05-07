@@ -10,7 +10,19 @@ describe('Product Handler', () => {
     category: 'Game'
   };
 
-  let token: string;
+  let token = '';
+
+  beforeAll(async () => {
+    const userData = {
+      username: 'luongtrung',
+      firstname: 'luong',
+      lastname: 'trung',
+      password: 'trung123',
+    };
+
+    const { body: userBody } = await request.post('/users/create').send(userData);
+    token = userBody;
+  });
 
   it('gets the create product endpoint', async (done) => {
     const res = await request
@@ -35,7 +47,7 @@ describe('Product Handler', () => {
   });
 
   it('gets product detail endpoint', async (done) => {
-    const res = await request.get(`/products/2`);
+    const res = await request.get(`/products/detail/1`);
     expect(res.status).toBe(200);
     done();
   });

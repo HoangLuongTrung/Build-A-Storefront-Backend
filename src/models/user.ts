@@ -80,7 +80,7 @@ export class UsersModel {
     }
   }
 
-  async update(info: UpdateUser): Promise<any> {
+  async update(info: UpdateUser): Promise<User> {
     try {
       const { id, firstName, lastName } = info;
       const connect = await client.connect();

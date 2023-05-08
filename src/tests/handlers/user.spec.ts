@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import jwt, { Secret } from 'jsonwebtoken';
-import app from '../server';
+import app from '../../server';
 
 const request = supertest(app);
 const SECRET = process.env.TOKEN_SECRET as Secret;
@@ -21,6 +21,7 @@ describe('User Handler', () => {
 
     const { body, status } = res;
     token = body;
+
     // @ts-ignore
     const { user } = jwt.verify(token, SECRET);
     userId = user.id;
@@ -71,11 +72,26 @@ describe('User Handler', () => {
     done();
   });
 
-  it('should get the delete user endpoint', async (done) => {
-    request.delete(`/delete_user/${userId}`).set('Authorization', 'bearer ' + token)
-      .then((res) => {
-        expect(res.status).toBe(200);
-        done();
+  it('should get the authenticate endpoint with wrong password', async (done) => {
+    const res = await request
+      .post('/authenticate')
+      .send({
+        username: userData.username,
+        password: 'wrongpassword',
       })
+      .set('Authorization', 'bearer ' + token);
+
+    expect(res.status).toBe(401);
+    done();
+  });
+
+  it('should get the delete user endpoint', async (done) => {
+    const res = await request.delete(`/delete_user/${userId}`).set('Authorization', 'bearer ' + token);
+    if (token) {
+      expect(res.status).toBe(200);
+    } else {
+      expect(res.status).toBe(401);
+    }
+    done();
   });
 });

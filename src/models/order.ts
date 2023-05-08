@@ -2,7 +2,7 @@ import client from "../database";
 
 export interface OrderProduct {
   productId: number;
-  quanlity: number;
+  quantity: number;
 }
 
 export interface OrderProductMapping {
@@ -11,9 +11,17 @@ export interface OrderProductMapping {
 }
 
 export interface Order {
+  id: number;
   userId: number;
   status: 'active' | 'complete';
   orderProducts: OrderProduct[];
+  user_id: number;
+}
+
+export interface OrderMapping {
+  status: 'active' | 'complete';
+  orderProducts: OrderProduct[];
+  user_id: number;
 }
 
 export class OrderModel {
@@ -25,7 +33,7 @@ export class OrderModel {
       const order = result.rows[0];
       const orderProducts = [];
       for (const product of products) {
-        const sqlOrderProducts = `INSERT INTO order_product(product_id, order_id, quantity) VALUES ('${product.productId}', ${order.id}, ${product.quanlity}) RETURNING product_id, quantity`;
+        const sqlOrderProducts = `INSERT INTO order_product(product_id, order_id, quantity) VALUES ('${product.productId}', ${order.id}, ${product.quantity}) RETURNING product_id, quantity`;
         const { rows } = await connect.query(sqlOrderProducts);
         orderProducts.push(rows[0]);
       }

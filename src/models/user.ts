@@ -17,6 +17,8 @@ export interface InfoUser {
   password: string;
   firstName: string;
   lastName: string;
+  firstname?: string; // To get value after update
+  lastname?: string; // To get value after update
 }
 
 export interface User extends InfoUser {

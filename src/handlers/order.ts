@@ -62,7 +62,7 @@ const updateOrder = async (req: Request, res: Response) => {
 
 export default function orderRoutes(app: Application) {
   app.post('/orders/create', verifyToken, orderProducts);
-  app.get('/orders/list', getListProductOrder);
+  app.get('/orders/list', verifyToken, getListProductOrder);
   app.get('/orders/detail/:id', verifyToken, getOrderDetail);
   app.delete('/orders/delete/:id', verifyToken, deleteOrder);
   app.put('/orders/update', verifyToken, updateOrder);

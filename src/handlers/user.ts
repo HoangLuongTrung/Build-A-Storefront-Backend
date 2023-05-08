@@ -74,6 +74,9 @@ const validateAuth = async (req: Request, res: Response) => {
     const username = req.body.username;
     const password = req.body.password;
     const user: User | null = await usersModel.authenticate({ username: username, password: password })
+    if (!user) {
+      return res.status(401).send(`Wrong username or password.`);
+    }
     res.json(getTokenByUser(user));
   } catch (error) {
     res.send(error);

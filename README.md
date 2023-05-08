@@ -42,6 +42,12 @@ This repo contains a basic Node and Express app to get you started in constructi
 `npm i supertest`
 `npm i --save-dev @types/supertest`
 
+## Instructions set up the Database and connect to it
+- connect to the default postgres database as the server's root user `psql -U postgres`
+- Create a user `CREATE USER postgres WITH PASSWORD '!@#QWE123qwe';`
+- Create database: `CREATE DATABASE storefront;`
+- Connection: `\c storefront`
+
 ## Set up Database
 `docker-compose up` to start the docker container
 `npm install` to install all dependencies

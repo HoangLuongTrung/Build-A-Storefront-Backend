@@ -2,7 +2,7 @@
   "spec_dir": "src/tests",
   "spec_files": ["**/*[sS]pec.ts"],
   "helpers": [
-    "helpers/**/*.js"
+    "handlers/**/*.ts"
   ],
   "reporters": [
     {

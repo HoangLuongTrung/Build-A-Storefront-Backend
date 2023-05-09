@@ -46,6 +46,7 @@ This repo contains a basic Node and Express app to get you started in constructi
 - connect to the default postgres database as the server's root user `psql -U postgres`
 - Create a user `CREATE USER postgres WITH PASSWORD '!@#QWE123qwe';`
 - Create database: `CREATE DATABASE storefront;`
+- Create database test: `CREATE DATABASE storefronttest;`
 - Connection: `\c storefront`
 
 ## Set up Database

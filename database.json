@@ -9,7 +9,7 @@
   "test": {
     "driver": "pg",
     "host": "127.0.0.1",
-    "database": "storefront",
+    "database": "storefronttest",
     "user": "postgres",
     "password": "!@#QWE123qwe"
   }

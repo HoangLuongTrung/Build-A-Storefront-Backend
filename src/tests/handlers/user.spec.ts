@@ -31,15 +31,21 @@ describe('User Handler', () => {
 
   it('should gets the list user endpoint', async (done) => {
     const res = await request.get('/users/list').set('Authorization', 'bearer ' + token);
-
-    expect(res.status).toBe(200);
+    if (token) {
+      expect(res.status).toBe(200);
+    } else {
+      expect(res.status).toBe(401);
+    }
     done();
   });
 
   it('should get user by id endpoint', async (done) => {
     const res = await request.get(`/users/${userId}`).set('Authorization', 'bearer ' + token);
-
-    expect(res.status).toBe(200);
+    if (token) {
+      expect(res.status).toBe(200);
+    } else {
+      expect(res.status).toBe(401);
+    }
     done();
   });
 

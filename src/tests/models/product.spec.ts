@@ -49,8 +49,6 @@ describe('Product Model', () => {
       id: createdProduct.id
     };
     const response = await productModel.update(newProduct);
-    console.log("response.price", response.price);
-    
     expect(response.name).toEqual(newProduct.name);
     expect(+response.price).toEqual(newProduct.price);
     await deleteProduct(createdProduct.id);

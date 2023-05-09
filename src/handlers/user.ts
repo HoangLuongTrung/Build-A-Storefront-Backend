@@ -86,9 +86,9 @@ const validateAuth = async (req: Request, res: Response) => {
 
 export default function userRoutes(app: Application) {
   app.post('/users/create', create);
-  app.get('/users/list', getListUser);
-  app.get('/users/:id', getUserById);
+  app.get('/users/list', verifyToken, getListUser);
+  app.get('/users/:id', verifyToken, getUserById);
   app.delete('/delete_user/:id', verifyToken, deleteUserById);
-  app.put('/update_user', updateUser);
+  app.put('/update_user', verifyToken, updateUser);
   app.post('/authenticate', validateAuth);
 }

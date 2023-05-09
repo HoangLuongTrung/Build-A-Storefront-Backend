@@ -23,7 +23,7 @@ describe('Order Model', () => {
     user_id = user.id;
 
     const product: Product = await productModel.create({
-      name: 'GTV 5',
+      name: 'GTA V',
       price: 2000,
     });
 

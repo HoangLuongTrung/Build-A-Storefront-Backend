@@ -21,9 +21,7 @@ app.get('/', function (req: Request, res: Response) {
 userRoutes(app);
 productRouter(app);
 orderRoutes(app);
-
 if (process.env.ENV === 'test') {
-    console.log('asdasdasda', process.env.ENV);
     port = 3001;
 }
 

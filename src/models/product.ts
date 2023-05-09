@@ -31,7 +31,7 @@ export class ProductModel {
     }
   }
 
-  async list(name: string): Promise<Product[]> {
+  async list(name?: string): Promise<Product[]> {
     try {
       const connect = await client.connect();
       const sql = `SELECT * FROM products WHERE LOWER(name) LIKE LOWER('${name || ''}%') ORDER BY name`;
